@@ -1,25 +1,38 @@
 ---
 all:
+  vars:
+    ansible_user: mranv  # or your preferred user
+    ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+    ansible_become: yes
+    ansible_become_method: sudo
   children:
     tikv_cluster:
       children:
         pd_servers:
-  hosts:
-    pd1:
-      ansible_host: <VM1_IP>        # Replace with your PD server IP
-      ansible_user: mranv          # Replace with your SSH user
-      ansible_ssh_private_key_file: ~/.ssh/id_ed25519  # Your SSH key path
-
-tikv_servers:
-  hosts:
-    kv1:
-      ansible_host: <VM2_IP>        # Replace with your TiKV server IP
-      ansible_user: mranv          # Replace with your SSH user
-      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
-
-surrealdb_servers:
-  hosts:
-    surreal1:
-      ansible_host: <VM3_IP>        # Replace with your SurrealDB server IP
-      ansible_user: mranv          # Replace with your SSH user
-      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+          hosts:
+            pd1:
+              ansible_host: <VM1_IP>
+              pd_port: 2379
+              ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+    surrealdb_cluster:
+      vars:
+        tikv_endpoint: "{{ hostvars[groups['pd_servers'][0]]['ansible_host'] }}:{{ hostvars[groups['pd_servers'][0]]['pd_port'] }}"
+      hosts:
+        primary:
+          ansible_host: <VM2_IP>
+          surreal_port: 8001
+          node_id: "primary"
+          is_primary: true
+          ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+        secondary1:
+          ansible_host: <VM3_IP>
+          surreal_port: 8002
+          node_id: "secondary1"
+          primary_peer: "{{ hostvars['primary']['ansible_host'] }}:{{ hostvars['primary']['surreal_port'] }}"
+          ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+        secondary2:
+          ansible_host: <VM4_IP>
+          surreal_port: 8003
+          node_id: "secondary2"
+          primary_peer: "{{ hostvars['primary']['ansible_host'] }}:{{ hostvars['primary']['surreal_port'] }}"
+          ansible_ssh_common_args: '-o StrictHostKeyChecking=no'

@@ -1,27 +1,7 @@
 ---
-- name: Create TiKV user
-  user:
-    name: "{{ tikv_user }}"
-    group: "{{ tikv_group }}"
-    system: yes
-    create_home: no
-    shell: /sbin/nologin
-
-- name: Create required directories
-  file:
-    path: "{{ item }}"
-    state: directory
-    owner: "{{ tikv_user }}"
-    group: "{{ tikv_group }}"
-    mode: '0755'
-  loop:
-    - "{{ tikv_data_dir }}"
-    - "{{ pd_data_dir }}"
-    - "/usr/local/bin"
-
 - name: Install TiUP
   shell: |
-    curl -sSf {{ tiup_mirror }}/install.sh | sh
+    curl -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
   args:
     creates: ~/.tiup/bin/tiup
 
@@ -31,15 +11,10 @@
     line: 'export PATH=/root/.tiup/bin:$PATH'
     create: yes
 
-- name: Install TiKV components
+- name: Start TiKV playground
   shell: |
     source ~/.bashrc
-    tiup install pd tikv playground
-
-- name: Create TiKV startup script
-  template:
-    src: tiup.sh.j2
-    dest: /usr/local/bin/start-tikv.sh
-    mode: '0755'
-    owner: "{{ tikv_user }}"
-    group: "{{ tikv_group }}"
+    tiup playground --tag surrealdb --mode tikv-slim --pd 1 --kv 1 --host 0.0.0.0
+  async: 300
+  poll: 0
+  when: inventory_hostname in groups['pd_servers']

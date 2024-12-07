@@ -1,0 +1,21 @@
+---
+- name: Deploy TiKV
+  hosts: tikv_cluster
+  become: yes
+  roles:
+    - common
+    - tikv
+
+- name: Deploy SurrealDB Primary
+  hosts: primary
+  become: yes
+  roles:
+    - common
+    - surrealdb
+
+- name: Deploy SurrealDB Secondaries
+  hosts: secondary1,secondary2
+  become: yes
+  roles:
+    - common
+    - surrealdb
