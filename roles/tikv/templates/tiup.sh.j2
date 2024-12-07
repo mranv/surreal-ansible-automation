@@ -1,0 +1,10 @@
+#!/bin/bash
+export PATH=/root/.tiup/bin:$PATH
+tiup playground \
+  --tag surrealdb \
+  --mode tikv-slim \
+  --pd 1 \
+  --kv 1 \
+  --host 0.0.0.0 \
+  --pd.config "{{ pd_data_dir }}/pd.toml" \
+  --kv.config "{{ tikv_data_dir }}/tikv.toml"

@@ -1,0 +1,35 @@
+---
+- name: Create SurrealDB user
+  user:
+    name: "{{ surreal_user }}"
+    group: "{{ surreal_group }}"
+    system: yes
+    create_home: no
+    shell: /sbin/nologin
+
+- name: Create required directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ surreal_user }}"
+    group: "{{ surreal_group }}"
+    mode: '0755'
+  loop:
+    - "{{ surrealdb_log_dir }}"
+    - "/usr/local/bin"
+
+- name: Download and extract SurrealDB
+  unarchive:
+    src: "{{ surrealdb_binary_url }}"
+    dest: "/usr/local/bin"
+    remote_src: yes
+    mode: '0755'
+    owner: "{{ surreal_user }}"
+    group: "{{ surreal_group }}"
+
+- name: Install SurrealDB systemd service
+  template:
+    src: surrealdb.service.j2
+    dest: /etc/systemd/system/surrealdb.service
+    mode: '0644'
+  notify: restart surrealdb

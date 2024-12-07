@@ -1,0 +1,5 @@
+---
+tikv_version: "7.1.0"
+tiup_mirror: "https://tiup-mirrors.pingcap.com"
+tikv_data_dir: "/data/tikv"
+pd_data_dir: "/data/pd"

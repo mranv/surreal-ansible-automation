@@ -1,0 +1,9 @@
+---
+tikv_user: "tikv"
+tikv_group: "tikv"
+pd_port: 2379
+surreal_user: "surreal"
+surreal_group: "surreal"
+surreal_port: 8000
+surreal_username: "root"
+surreal_password: "{{ vault_surreal_password }}"

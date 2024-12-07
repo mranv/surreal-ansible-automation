@@ -1,0 +1,6 @@
+---
+- name: restart tikv
+  shell: |
+    /usr/local/bin/start-tikv.sh
+  async: 45
+  poll: 0

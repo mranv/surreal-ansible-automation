@@ -1,0 +1,5 @@
+---
+surrealdb_version: "1.1.1"
+surrealdb_binary_url: "https://download.surrealdb.com/v{{ surrealdb_version }}/surreal-{{ surrealdb_version }}.linux-amd64.tar.gz"
+surrealdb_log_level: "info"
+surrealdb_log_dir: "/var/log/surrealdb"

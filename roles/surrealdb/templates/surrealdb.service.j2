@@ -1,0 +1,20 @@
+[Unit]
+Description=SurrealDB Database Server
+After=network.target
+
+[Service]
+Type=simple
+User={{ surreal_user }}
+Group={{ surreal_group }}
+ExecStart=/usr/local/bin/surreal start \
+    --user {{ surreal_username }} \
+    --pass {{ surreal_password }} \
+    --bind 0.0.0.0:{{ surreal_port }} \
+    --log {{ surrealdb_log_level }} \
+    tikv://{{ hostvars[groups['pd_servers'][0]]['ansible_host'] }}:{{ pd_port }}
+Restart=always
+RestartSec=5
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target

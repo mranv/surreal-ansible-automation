@@ -1,0 +1,17 @@
+---
+all:
+  children:
+    tikv_cluster:
+      children:
+        pd_servers:
+          hosts:
+            pd1:
+              ansible_host: <VM1_IP>
+        tikv_servers:
+          hosts:
+            kv1:
+              ansible_host: <VM2_IP>
+    surrealdb_servers:
+      hosts:
+        surreal1:
+          ansible_host: <VM3_IP>
