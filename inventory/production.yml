@@ -7,19 +7,19 @@ all:
   hosts:
     pd1:
       ansible_host: <VM1_IP>        # Replace with your PD server IP
-      ansible_user: ubuntu          # Replace with your SSH user
-      ansible_ssh_private_key_file: ~/.ssh/your_key.pem  # Your SSH key path
+      ansible_user: mranv          # Replace with your SSH user
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519  # Your SSH key path
 
 tikv_servers:
   hosts:
     kv1:
       ansible_host: <VM2_IP>        # Replace with your TiKV server IP
-      ansible_user: ubuntu          # Replace with your SSH user
-      ansible_ssh_private_key_file: ~/.ssh/your_key.pem
+      ansible_user: mranv          # Replace with your SSH user
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
 
 surrealdb_servers:
   hosts:
     surreal1:
       ansible_host: <VM3_IP>        # Replace with your SurrealDB server IP
-      ansible_user: ubuntu          # Replace with your SSH user
-      ansible_ssh_private_key_file: ~/.ssh/your_key.pem
+      ansible_user: mranv          # Replace with your SSH user
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
