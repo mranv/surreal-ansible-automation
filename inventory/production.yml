@@ -4,14 +4,22 @@ all:
     tikv_cluster:
       children:
         pd_servers:
-          hosts:
-            pd1:
-              ansible_host: <VM1_IP>
-        tikv_servers:
-          hosts:
-            kv1:
-              ansible_host: <VM2_IP>
-    surrealdb_servers:
-      hosts:
-        surreal1:
-          ansible_host: <VM3_IP>
+  hosts:
+    pd1:
+      ansible_host: <VM1_IP>        # Replace with your PD server IP
+      ansible_user: ubuntu          # Replace with your SSH user
+      ansible_ssh_private_key_file: ~/.ssh/your_key.pem  # Your SSH key path
+
+tikv_servers:
+  hosts:
+    kv1:
+      ansible_host: <VM2_IP>        # Replace with your TiKV server IP
+      ansible_user: ubuntu          # Replace with your SSH user
+      ansible_ssh_private_key_file: ~/.ssh/your_key.pem
+
+surrealdb_servers:
+  hosts:
+    surreal1:
+      ansible_host: <VM3_IP>        # Replace with your SurrealDB server IP
+      ansible_user: ubuntu          # Replace with your SSH user
+      ansible_ssh_private_key_file: ~/.ssh/your_key.pem
